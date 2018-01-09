@@ -128,6 +128,9 @@ public final class ReflectiveTypeAdapterFactory implements TypeAdapterFactory {
           throws IOException, IllegalAccessException {
         Object fieldValue = typeAdapter.read(reader);
         if (fieldValue != null || !isPrimitive) {
+          if (reader.isDuplicates() && null != field.get(value)) {
+            throw new JsonSyntaxException("Duplicate input key : " + field.getName());
+          }
           field.set(value, fieldValue);
         }
       }

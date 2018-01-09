@@ -228,6 +228,9 @@ public class JsonReader implements Closeable {
 
   /** True to accept non-spec compliant JSON */
   private boolean lenient = false;
+  
+  /** True to raise error on duplicate key */
+  private boolean duplicates = false;
 
   /**
    * Use a manual buffer to easily read and unread upcoming characters, and
@@ -331,6 +334,20 @@ public class JsonReader implements Closeable {
    */
   public final boolean isLenient() {
     return lenient;
+  }
+  
+  /**
+   * Set whether or not parsing should fail while reading duplicate key.
+   */
+  public final void setDuplicates(boolean duplicates) {
+    this.duplicates = duplicates;
+  }
+  
+  /**
+   * Returns true if parsing should fail while reading duplicate key.
+   */
+  public final boolean isDuplicates() {
+    return duplicates;
   }
 
   /**

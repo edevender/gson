@@ -103,6 +103,7 @@ import com.google.gson.stream.MalformedJsonException;
 public final class Gson {
   static final boolean DEFAULT_JSON_NON_EXECUTABLE = false;
   static final boolean DEFAULT_LENIENT = false;
+  static final boolean DEFAULT_DUPLICATES = false;
   static final boolean DEFAULT_PRETTY_PRINT = false;
   static final boolean DEFAULT_ESCAPE_HTML = true;
   static final boolean DEFAULT_SERIALIZE_NULLS = false;
@@ -134,6 +135,7 @@ public final class Gson {
   private final boolean generateNonExecutableJson;
   private final boolean prettyPrinting;
   private final boolean lenient;
+  private final boolean duplicates;
   private final JsonAdapterAnnotationTypeAdapterFactory jsonAdapterFactory;
 
   /**
@@ -174,14 +176,14 @@ public final class Gson {
     this(Excluder.DEFAULT, FieldNamingPolicy.IDENTITY,
         Collections.<Type, InstanceCreator<?>>emptyMap(), DEFAULT_SERIALIZE_NULLS,
         DEFAULT_COMPLEX_MAP_KEYS, DEFAULT_JSON_NON_EXECUTABLE, DEFAULT_ESCAPE_HTML,
-        DEFAULT_PRETTY_PRINT, DEFAULT_LENIENT, DEFAULT_SPECIALIZE_FLOAT_VALUES,
+        DEFAULT_PRETTY_PRINT, DEFAULT_LENIENT, DEFAULT_DUPLICATES, DEFAULT_SPECIALIZE_FLOAT_VALUES,
         LongSerializationPolicy.DEFAULT, Collections.<TypeAdapterFactory>emptyList());
   }
 
   Gson(final Excluder excluder, final FieldNamingStrategy fieldNamingStrategy,
       final Map<Type, InstanceCreator<?>> instanceCreators, boolean serializeNulls,
       boolean complexMapKeySerialization, boolean generateNonExecutableGson, boolean htmlSafe,
-      boolean prettyPrinting, boolean lenient, boolean serializeSpecialFloatingPointValues,
+      boolean prettyPrinting, boolean lenient, boolean duplicates, boolean serializeSpecialFloatingPointValues,
       LongSerializationPolicy longSerializationPolicy,
       List<TypeAdapterFactory> typeAdapterFactories) {
     this.constructorConstructor = new ConstructorConstructor(instanceCreators);
@@ -192,6 +194,7 @@ public final class Gson {
     this.htmlSafe = htmlSafe;
     this.prettyPrinting = prettyPrinting;
     this.lenient = lenient;
+    this.duplicates = duplicates;
 
     List<TypeAdapterFactory> factories = new ArrayList<TypeAdapterFactory>();
 
@@ -880,6 +883,7 @@ public final class Gson {
     boolean isEmpty = true;
     boolean oldLenient = reader.isLenient();
     reader.setLenient(true);
+    reader.setDuplicates(duplicates);
     try {
       reader.peek();
       isEmpty = false;

@@ -37,6 +37,7 @@ import static com.google.gson.Gson.DEFAULT_COMPLEX_MAP_KEYS;
 import static com.google.gson.Gson.DEFAULT_ESCAPE_HTML;
 import static com.google.gson.Gson.DEFAULT_JSON_NON_EXECUTABLE;
 import static com.google.gson.Gson.DEFAULT_LENIENT;
+import static com.google.gson.Gson.DEFAULT_DUPLICATES;
 import static com.google.gson.Gson.DEFAULT_PRETTY_PRINT;
 import static com.google.gson.Gson.DEFAULT_SERIALIZE_NULLS;
 import static com.google.gson.Gson.DEFAULT_SPECIALIZE_FLOAT_VALUES;
@@ -94,6 +95,7 @@ public final class GsonBuilder {
   private boolean prettyPrinting = DEFAULT_PRETTY_PRINT;
   private boolean generateNonExecutableJson = DEFAULT_JSON_NON_EXECUTABLE;
   private boolean lenient = DEFAULT_LENIENT;
+  private boolean duplicates = DEFAULT_DUPLICATES;
 
   /**
    * Creates a GsonBuilder instance that can be used to build Gson with various configuration
@@ -376,6 +378,17 @@ public final class GsonBuilder {
   }
 
   /**
+   * By default, Gson accepts input duplicate key when deserializing 
+   *
+   * @return a reference to this {@code GsonBuilder} object to fulfill the "Builder" pattern
+   * @see JsonReader#setDuplicates(boolean)
+   */
+  public GsonBuilder setDuplicates() {
+    duplicates = true;
+    return this;
+  }
+  
+  /**
    * By default, Gson escapes HTML characters such as &lt; &gt; etc. Use this option to configure
    * Gson to pass-through HTML characters as is.
    *
@@ -571,7 +584,7 @@ public final class GsonBuilder {
 
     return new Gson(excluder, fieldNamingPolicy, instanceCreators,
         serializeNulls, complexMapKeySerialization,
-        generateNonExecutableJson, escapeHtmlChars, prettyPrinting, lenient,
+        generateNonExecutableJson, escapeHtmlChars, prettyPrinting, lenient, duplicates,
         serializeSpecialFloatingPointValues, longSerializationPolicy, factories);
   }
 
